@@ -19,11 +19,6 @@ namespace ReportCash.Infrastructure.Repo
         {
             var lancamentos = await _dbContext.Lancamentos.ToListAsync();
 
-            if (lancamentos.Count == 0)
-            {
-                throw new Exception("Ooops! Ainda não houve lançamentos...");
-            }
-
             decimal saldoDiario = lancamentos.Sum(l => l.Valor);
 
             var relatorio = new Relatorio(saldoDiario);

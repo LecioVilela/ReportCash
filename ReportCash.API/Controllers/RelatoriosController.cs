@@ -21,6 +21,7 @@ namespace ReportCash.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetRelatorio(string query)
         {
             var getRelatorio = new GetRelatorio(query);
