@@ -19,18 +19,25 @@ namespace ReportCash.API.Controllers
         {
             _mediator = mediator;
         }
-// FALTA TERMINAR MAIS ENDPOINTS AQUI NESSA CONTROLLER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! OLHAR NA ProjectsController do DevFreela
+
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll(string query)
         {
             var getAllLancamentos = new GetAllLancamento(query);
 
             var lancamentos = await _mediator.Send(getAllLancamentos);
 
+            if (lancamentos.Count == 0)
+            {
+                return NoContent();
+            }
+
             return Ok(lancamentos);
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById(Guid id)
         {
             var query = new GetLancamentoById(id);
@@ -44,6 +51,7 @@ namespace ReportCash.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Post([FromBody] AddLancamento command)
         {
             var id = await _mediator.Send(command);
@@ -52,6 +60,7 @@ namespace ReportCash.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Put(Guid id, [FromBody] PutLancamento command)
         {
             await _mediator.Send(command);
@@ -60,6 +69,7 @@ namespace ReportCash.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var deleteId = new DeleteLancamento(id);
