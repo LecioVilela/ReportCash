@@ -35,6 +35,9 @@ namespace ReportCash.Infrastructure.Repo
         {
             var lancamentoGet = await _dbContext.Lancamentos.SingleOrDefaultAsync(l => l.Id == id);
 
+            if (lancamentoGet is null)
+                throw new Exception("Ooops! Lançamento não encontrado");
+
             return lancamentoGet;
         }
 
@@ -42,12 +45,18 @@ namespace ReportCash.Infrastructure.Repo
         {
             var lancamentoUpdate = await _dbContext.Lancamentos.SingleOrDefaultAsync(l => l.Id == lancamento.Id);
 
+            if (lancamentoUpdate is null)
+                throw new Exception("Ooops! Lançamento não encontrado");
+
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)
         {
             var lancamentoDelete = await _dbContext.Lancamentos.SingleOrDefaultAsync(l => l.Id == id);
+
+            if (lancamentoDelete is null)
+                throw new Exception("Ooops! Lançamento não encontrado");
 
             _dbContext.Lancamentos.Remove(lancamentoDelete);
             await _dbContext.SaveChangesAsync();
